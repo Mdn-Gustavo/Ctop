@@ -43,6 +43,10 @@ void get_mem_usage() {
     filled = blocks;
 
   for (int i = 0; i <= blocks; i++) {
+    if (i <= filled)
+      printf("|");
+    else
+      printf(" ");
   }
   usleep(100000);
   printf(" ");
