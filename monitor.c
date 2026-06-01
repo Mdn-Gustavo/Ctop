@@ -19,7 +19,6 @@ void get_mem_usage() {
              "MemTotal:"
              "%lu kB",
              &mem_total);
-      printf("MemTotal: %lu kB\n", mem_total);
     }
 
     // mesma coisa com o mem_free bicho
@@ -28,7 +27,6 @@ void get_mem_usage() {
              "MemAvailable:"
              "%lu kB",
              &mem_available);
-      printf("MemAvailable: %lu kB\n", mem_available);
     }
   }
   fclose(fp);
@@ -36,26 +34,31 @@ void get_mem_usage() {
   float percent =
       ((float)mem_total - (float)mem_available) / (float)mem_total * 100;
   const int blocks = 20;
-  int filled = (int)(mem_total - mem_available) / 0.8;
+  int filled = (int)((percent * blocks) / 100);
   if (filled < 0)
     filled = 0;
   if (filled > blocks)
     filled = blocks;
 
-  for (int i = 0; i <= blocks; i++) {
+  printf("[");
+  for (int i = 0; i < blocks; i++) {
     if (i <= filled)
       printf("|");
     else
       printf(" ");
   }
+  printf("]");
+  printf("%.2f%%", percent);
   usleep(100000);
   printf(" ");
 }
 
 int main() {
   while (1) {
-    printf("\033[H\033[2J");
+    printf("\033[H");
     printf("---HolyMonitor---\n");
+    printf("MEMORY USAGE:\n");
+    printf("   ");
     get_mem_usage();
     fflush(stdout);
     usleep(100000);
